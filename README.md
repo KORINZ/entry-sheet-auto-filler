@@ -1,4 +1,4 @@
-# Entry Sheet Auto Filler
+# Entry Sheet Auto Filler v1.0.0
 Automatically filling entry sheet with personal information. Powered by Selenium 4.
 
 ### Prerequisite
