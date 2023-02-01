@@ -11,8 +11,9 @@ driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())
 # PATH = "https://safie-recruit.snar.jp/"
 # PATH = "https://moneyforward-recruit.snar.jp/index.aspx"
 # PATH = "https://linecorp.snar.jp/"
+# PATH = "https://gree-recruit.snar.jp/"
 # PATH = "https://job.axol.jp/jn/s/kddi_24/entry/agreement"
-PATH = "https://gree-recruit.snar.jp/"
+PATH = "https://mypage.3050.i-webs.jp/sumika2024/applicant/entry/index/entrycd/"
 
 driver.get(PATH)
 
@@ -28,6 +29,8 @@ INFO = {
     "BIRTH_DAY": "2000/01/15",
     "GRADUATION_DAY": "2024/09",
     "GRADUATED": False,
+    "LAB": "国際経済学ゼミ",
+    "CLUB": "オリエンテーリング",
     "ZIP": "100-0001",
     "PREFECTURE": "東京都",
     "ADDRESS": "千代田区千代田1-1",
@@ -127,13 +130,33 @@ def snar_jp(job_id: str) -> None:
         pass
 
 
+def i_webs_jp() -> None:
+    driver.find_element(By.ID, "first_access").click()
+    driver.find_element(By.CSS_SELECTOR, ".btn_right130 a").click()
+    driver.find_element(By.NAME, "kname1").send_keys(INFO["NAME"].split(' ')[0])
+    driver.find_element(By.NAME, "kname2").send_keys(INFO["NAME"].split(' ')[1])
+    driver.find_element(By.NAME, "yname1").send_keys(INFO["FURIGANA"].split(' ')[0])
+    driver.find_element(By.NAME, "yname2").send_keys(INFO["FURIGANA"].split(' ')[1])
+
+
+def axol_jp() -> None:
+    driver.find_element(By.ID, "submit").click()
+    driver.find_element(By.NAME, "kanji_sei").send_keys(INFO["NAME"].split(' ')[0])
+    driver.find_element(By.NAME, "kanji_na").send_keys(INFO["NAME"].split(' ')[1])
+    driver.find_element(By.NAME, "kana_sei").send_keys(INFO["FURIGANA"].split(' ')[0])
+    driver.find_element(By.NAME, "kana_na").send_keys(INFO["FURIGANA"].split(' ')[1])
+
+    driver.find_element(By.NAME, "yubing_h").send_keys(INFO["ZIP"].split('-')[0])
+    driver.find_element(By.NAME, "yubing_l").send_keys(INFO["ZIP"].split('-')[1])
+
+
 if __name__ == '__main__':
     if "snar.jp" in PATH:
         snar_jp(JOB_TYPE_SNAR_JP)
     elif "i-webs.jp" in PATH:
-        print("Website not yet supported.")
+        i_webs_jp()
     elif "axol.jp" in PATH:
-        print("Website not yet supported.")
+        axol_jp()
     else:
         print("Website not yet supported.")
 
