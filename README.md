@@ -2,7 +2,7 @@
 Automatically filling entry sheet with personal information. Powered by Selenium 4.
 
 ### Note
-Ocansionally, `NoSuchElementException` will raise due to the customization of the entry sheet. Revise the code accordingly.
+Ocansionally, `NoSuchElementException` will raise due to the customization of the entry sheet. Revise the code accordingly with `try...except`.
 
 ### Prerequisite
 selenium 4.8.0
