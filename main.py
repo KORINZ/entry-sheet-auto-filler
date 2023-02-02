@@ -58,10 +58,13 @@ def snar_jp(job_id: str) -> None:
     driver.find_element(By.ID, "lkb_Agree").click()
     driver.implicitly_wait(0.5)
 
+    # 氏名
     driver.find_element(By.ID, "tbx_name1").send_keys(INFO["NAME"].split(' ')[0])
     driver.find_element(By.ID, "tbx_name2").send_keys(INFO["NAME"].split(' ')[1])
     driver.find_element(By.ID, "tbx_kana1").send_keys(INFO["FURIGANA"].split(' ')[0])
     driver.find_element(By.ID, "tbx_kana2").send_keys(INFO["FURIGANA"].split(' ')[1])
+
+    # メールアドレス
     driver.find_element(By.ID, "tbx_mail").send_keys(INFO["EMAIL"])
     driver.find_element(By.ID, "tbx_mail_R").send_keys(INFO["EMAIL"])
 
@@ -71,6 +74,7 @@ def snar_jp(job_id: str) -> None:
     except NoSuchElementException:
         pass
 
+    # 生年月日
     yyyy = driver.find_element(By.ID, "ddl_birthY")
     Select(yyyy).select_by_visible_text(INFO["BIRTH_DAY"].split('/')[0])
     mm = driver.find_element(By.ID, "ddl_birthM")
@@ -84,6 +88,7 @@ def snar_jp(job_id: str) -> None:
     except NoSuchElementException:
         Select(dd).select_by_visible_text(INFO["BIRTH_DAY"].split('/')[2][1])
 
+    # 卒業予定
     yyyy_university = driver.find_element(By.ID, "ddl_sotsuyY")
     Select(yyyy_university).select_by_visible_text(INFO["GRADUATION_DAY"].split('/')[0])
 
@@ -99,6 +104,7 @@ def snar_jp(job_id: str) -> None:
     else:
         Select(graduation_status).select_by_visible_text("卒業予定")
 
+    # 携帯番号
     try:
         driver.find_element(By.ID, "tbx_keitai1").send_keys(INFO["MOBILE"].split('-')[0])
         driver.find_element(By.ID, "tbx_keitai2").send_keys(INFO["MOBILE"].split('-')[1])
@@ -113,6 +119,7 @@ def snar_jp(job_id: str) -> None:
     except NoSuchElementException:
         pass
 
+    # 性別
     try:
         if INFO["GENDER"] == "male":
             gender = driver.find_element(By.ID, "rbt_sex1")
@@ -126,6 +133,7 @@ def snar_jp(job_id: str) -> None:
     except NoSuchElementException:
         pass
 
+    # 住所情報
     try:
         driver.find_element(By.ID, "tbx_zip1").send_keys(INFO["ZIP"].split('-')[0])
         driver.find_element(By.ID, "tbx_zip2").send_keys(INFO["ZIP"].split('-')[1])
