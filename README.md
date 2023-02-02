@@ -1,6 +1,8 @@
 # Entry Sheet Auto Filler (エントリーシートオートフィラー) v1.1.0
 Automatically filling entry sheet with personal information. Powered by Selenium 4.
 
+Ocansionally, `NoSuchElementException` will raise due to the customization of the entry sheet. Revise the code accordingly.
+
 ### Prerequisite
 selenium 4.8.0
 ```
