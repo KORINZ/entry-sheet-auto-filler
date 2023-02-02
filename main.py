@@ -247,7 +247,7 @@ def axol_jp() -> None:
 
     prefecture = driver.find_element(By.NAME, "koko_ken")
     Select(prefecture).select_by_visible_text(INFO["PREFECTURE"])
-    driver.find_element(By.NAME, "koko_word").send_keys(INFO["HIGH_SCHOOL"].split("高")[0])
+    driver.find_element(By.NAME, "koko_word").send_keys(INFO["HIGH_SCHOOL"].split("高等")[0])
     driver.find_element(By.NAME, "koko_search").click()
     driver.find_element(By.XPATH, f"//*[contains(text(),'{INFO['HIGH_SCHOOL']}')]").click()
 
