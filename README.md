@@ -10,7 +10,7 @@ webdriver-manager 3.8.5
 ```
 pip install webdriver-manager
 ```
-### Currently supported website(s)
+### Currently Supported Website(s)
 1. snar.jp (採用管理システムsonar ATS)
 2. axol.jp (株式会社マイナビ)
 
