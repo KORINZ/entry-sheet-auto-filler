@@ -165,11 +165,14 @@ def axol_jp() -> None:
     """株式会社マイナビ"""
 
     driver.find_element(By.ID, "submit").click()
+    # 漢字氏名
     driver.find_element(By.NAME, "kanji_sei").send_keys(INFO["NAME"].split(' ')[0])
     driver.find_element(By.NAME, "kanji_na").send_keys(INFO["NAME"].split(' ')[1])
+    # カナ氏名
     driver.find_element(By.NAME, "kana_sei").send_keys(INFO["FURIGANA"].split(' ')[0])
     driver.find_element(By.NAME, "kana_na").send_keys(INFO["FURIGANA"].split(' ')[1])
 
+    # 性別
     try:
         if INFO["GENDER"] == "male":
             gender = driver.find_element(By.XPATH, "//*[ text() = '男性' ]")
@@ -180,6 +183,7 @@ def axol_jp() -> None:
     except NoSuchElementException:
         pass
 
+    # 生年月日
     try:
         yyyy = driver.find_element(By.NAME, "birth_Y")
         Select(yyyy).select_by_visible_text(INFO["BIRTH_DAY"].split('/')[0])
@@ -192,6 +196,7 @@ def axol_jp() -> None:
     except NoSuchElementException:
         pass
 
+    # 現住所
     driver.find_element(By.NAME, "yubing_h").send_keys(INFO["ZIP"].split('-')[0])
     driver.find_element(By.NAME, "yubing_l").send_keys(INFO["ZIP"].split('-')[1])
 
@@ -201,6 +206,7 @@ def axol_jp() -> None:
     driver.find_element(By.NAME, "jushog2").send_keys(''.join(re.split(r'(\d+)', INFO["ADDRESS"])[1:]))
     driver.find_element(By.NAME, "jushog3").send_keys(INFO["APARTMENT"])
 
+    # 電話番号
     driver.find_element(By.NAME, "telg_h").send_keys(INFO["MOBILE"].split('-')[0])
     driver.find_element(By.NAME, "telg_m").send_keys(INFO["MOBILE"].split('-')[1])
     driver.find_element(By.NAME, "telg_l").send_keys(INFO["MOBILE"].split('-')[2])
@@ -213,11 +219,13 @@ def axol_jp() -> None:
         same_address = driver.find_element(By.NAME, "jushosame")
         driver.execute_script("arguments[0].click();", same_address)
 
+    # メールアドレス
     driver.find_element(By.NAME, "email").send_keys(INFO["EMAIL"])
     driver.find_element(By.NAME, "email2").send_keys(INFO["EMAIL"])
     driver.find_element(By.NAME, "kmail").send_keys(INFO["PHONE_EMAIL"])
     driver.find_element(By.NAME, "kmail2").send_keys(INFO["PHONE_EMAIL"])
 
+    # 学校情報
     driver.find_element(By.XPATH, f"//*[ text() = '{INFO['DEGREE']}' ]").click()
     driver.find_element(By.XPATH, f"//*[ text() = '{INFO['UNIVERSITY_TYPE']}' ]").click()
 
