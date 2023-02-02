@@ -157,11 +157,13 @@ def i_webs_jp() -> None:
 
     driver.find_element(By.ID, "first_access").click()
     driver.find_element(By.CSS_SELECTOR, ".btn_right130 a").click()
+    # お名前
     driver.find_element(By.NAME, "kname1").send_keys(INFO["NAME"].split(' ')[0])
     driver.find_element(By.NAME, "kname2").send_keys(INFO["NAME"].split(' ')[1])
     driver.find_element(By.NAME, "yname1").send_keys(INFO["FURIGANA"].split(' ')[0])
     driver.find_element(By.NAME, "yname2").send_keys(INFO["FURIGANA"].split(' ')[1])
 
+    # 生年月日
     driver.find_element(By.XPATH, "//div[@style='z-index: 999; width: 85px;']").click()
     yyyy = driver.find_element(By.XPATH, f"//*[contains(text(),'{INFO['BIRTH_DAY'].split('/')[0]}')]")
     driver.execute_script("arguments[0].click();", yyyy)
