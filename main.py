@@ -5,6 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from webdriver_manager.chrome import ChromeDriverManager
 
+import re
+
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 # PATH = "https://dena.snar.jp/index.aspx"
@@ -13,7 +15,8 @@ driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())
 # PATH = "https://linecorp.snar.jp/"
 # PATH = "https://gree-recruit.snar.jp/"
 # PATH = "https://job.axol.jp/jn/s/kddi_24/entry/agreement"
-PATH = "https://mypage.3050.i-webs.jp/sumika2024/applicant/entry/index/entrycd/"
+PATH = "https://job.axol.jp/pm/s/nipponsteel_23/entry/agreement"
+# PATH = "https://mypage.3050.i-webs.jp/sumika2024/applicant/entry/index/entrycd/"
 
 driver.get(PATH)
 
@@ -25,9 +28,18 @@ INFO = {
     "GENDER": "female",
     "EMAIL": "example.japan@gmail.com",
     "SUB_EMAIL": "example.japan2@gmail.com",
+    "PHONE_EMAIL": "example.japan3@phone.com",
     "MOBILE": "010-1234-5678",
     "BIRTH_DAY": "2000/01/15",
+    "HIGH_SCHOOL": "大江戸高等学校",
+    "UNIVERSITY": "大阪大学",
+    "MATRICULATION_DAY": "2019/03",
     "GRADUATION_DAY": "2024/09",
+    "UNIVERSITY_INITIAL": "オ",
+    "DEPARTMENT": "外国語学部",
+    "MAJOR": "外国語学科",
+    "DEGREE": "大学",
+    "UNIVERSITY_TYPE": "国立",
     "GRADUATED": False,
     "LAB": "国際経済学ゼミ",
     "CLUB": "オリエンテーリング",
@@ -152,8 +164,86 @@ def axol_jp() -> None:
     driver.find_element(By.NAME, "kana_sei").send_keys(INFO["FURIGANA"].split(' ')[0])
     driver.find_element(By.NAME, "kana_na").send_keys(INFO["FURIGANA"].split(' ')[1])
 
+    try:
+        if INFO["GENDER"] == "male":
+            gender = driver.find_element(By.XPATH, "//*[ text() = '男性' ]")
+            driver.execute_script("arguments[0].click();", gender)
+        else:
+            gender = driver.find_element(By.XPATH, "//*[ text() = '女性' ]")
+            driver.execute_script("arguments[0].click();", gender)
+    except NoSuchElementException:
+        pass
+
+    try:
+        yyyy = driver.find_element(By.NAME, "birth_Y")
+        Select(yyyy).select_by_visible_text(INFO["BIRTH_DAY"].split('/')[0])
+
+        mm = driver.find_element(By.NAME, "birth_m")
+        Select(mm).select_by_visible_text(INFO["BIRTH_DAY"].split('/')[1])
+
+        dd = driver.find_element(By.NAME, "birth_d")
+        Select(dd).select_by_visible_text(INFO["BIRTH_DAY"].split('/')[2])
+    except NoSuchElementException:
+        pass
+
     driver.find_element(By.NAME, "yubing_h").send_keys(INFO["ZIP"].split('-')[0])
     driver.find_element(By.NAME, "yubing_l").send_keys(INFO["ZIP"].split('-')[1])
+
+    prefecture = driver.find_element(By.ID, "keng")
+    Select(prefecture).select_by_visible_text(INFO["PREFECTURE"])
+    driver.find_element(By.NAME, "jushog1").send_keys(re.split(r'(\d+)', INFO["ADDRESS"])[0])
+    driver.find_element(By.NAME, "jushog2").send_keys(''.join(re.split(r'(\d+)', INFO["ADDRESS"])[1:]))
+    driver.find_element(By.NAME, "jushog3").send_keys(INFO["APARTMENT"])
+
+    driver.find_element(By.NAME, "telg_h").send_keys(INFO["MOBILE"].split('-')[0])
+    driver.find_element(By.NAME, "telg_m").send_keys(INFO["MOBILE"].split('-')[1])
+    driver.find_element(By.NAME, "telg_l").send_keys(INFO["MOBILE"].split('-')[2])
+
+    driver.find_element(By.NAME, "keitai_h").send_keys(INFO["MOBILE"].split('-')[0])
+    driver.find_element(By.NAME, "keitai_m").send_keys(INFO["MOBILE"].split('-')[1])
+    driver.find_element(By.NAME, "keitai_l").send_keys(INFO["MOBILE"].split('-')[2])
+
+    if INFO["SAME_ADDRESS"]:
+        same_address = driver.find_element(By.NAME, "jushosame")
+        driver.execute_script("arguments[0].click();", same_address)
+
+    driver.find_element(By.NAME, "email").send_keys(INFO["EMAIL"])
+    driver.find_element(By.NAME, "email2").send_keys(INFO["EMAIL"])
+    driver.find_element(By.NAME, "kmail").send_keys(INFO["PHONE_EMAIL"])
+    driver.find_element(By.NAME, "kmail2").send_keys(INFO["PHONE_EMAIL"])
+
+    driver.find_element(By.XPATH, f"//*[ text() = '{INFO['DEGREE']}' ]").click()
+    driver.find_element(By.XPATH, f"//*[ text() = '{INFO['UNIVERSITY_TYPE']}' ]").click()
+
+    driver.find_element(By.NAME, "initial").send_keys(INFO["UNIVERSITY_INITIAL"])
+    driver.find_element(By.ID, "jsAxolSchool_dcd_search").click()
+    driver.implicitly_wait(0.5)
+    driver.find_element(By.XPATH, f"//*[ text() = '{INFO['UNIVERSITY']}' ]").click()
+
+    department = driver.find_element(By.ID, "bcd")
+    Select(department).select_by_visible_text(INFO["DEPARTMENT"])
+
+    major = driver.find_element(By.ID, "paxcd")
+    Select(major).select_by_visible_text(INFO["MAJOR"])
+
+    try:
+        matriculation_yyyy = driver.find_element(By.NAME, "school_from_Y")
+        Select(matriculation_yyyy).select_by_visible_text(INFO["MATRICULATION_DAY"].split('/')[0])
+        matriculation_mm = driver.find_element(By.NAME, "school_from_m")
+        Select(matriculation_mm).select_by_visible_text(INFO["MATRICULATION_DAY"].split('/')[1])
+    except NoSuchElementException:
+        pass
+
+    graduation_yyyy = driver.find_element(By.NAME, "school_to_Y")
+    Select(graduation_yyyy).select_by_visible_text(INFO["GRADUATION_DAY"].split('/')[0])
+    graduation_mm = driver.find_element(By.NAME, "school_to_m")
+    Select(graduation_mm).select_by_visible_text(INFO["GRADUATION_DAY"].split('/')[1])
+
+    prefecture = driver.find_element(By.NAME, "koko_ken")
+    Select(prefecture).select_by_visible_text(INFO["PREFECTURE"])
+    driver.find_element(By.NAME, "koko_word").send_keys(INFO["HIGH_SCHOOL"].split("高")[0])
+    driver.find_element(By.NAME, "koko_search").click()
+    driver.find_element(By.XPATH, f"//*[contains(text(),'{INFO['HIGH_SCHOOL']}')]").click()
 
 
 if __name__ == '__main__':
