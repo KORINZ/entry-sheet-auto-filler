@@ -52,6 +52,8 @@ INFO = {
 
 
 def snar_jp(job_id: str) -> None:
+    """採用管理システムsonar ATS"""
+
     driver.find_element(By.ID, job_id).click()
     driver.find_element(By.ID, "lkb_Agree").click()
     driver.implicitly_wait(0.5)
@@ -143,6 +145,8 @@ def snar_jp(job_id: str) -> None:
 
 
 def i_webs_jp() -> None:
+    """株式会社ヒューマネージ"""
+
     driver.find_element(By.ID, "first_access").click()
     driver.find_element(By.CSS_SELECTOR, ".btn_right130 a").click()
     driver.find_element(By.NAME, "kname1").send_keys(INFO["NAME"].split(' ')[0])
@@ -158,6 +162,8 @@ def i_webs_jp() -> None:
 
 
 def axol_jp() -> None:
+    """株式会社マイナビ"""
+
     driver.find_element(By.ID, "submit").click()
     driver.find_element(By.NAME, "kanji_sei").send_keys(INFO["NAME"].split(' ')[0])
     driver.find_element(By.NAME, "kanji_na").send_keys(INFO["NAME"].split(' ')[1])
