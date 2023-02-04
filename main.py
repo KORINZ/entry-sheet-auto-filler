@@ -15,7 +15,8 @@ driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())
 # PATH = "https://linecorp.snar.jp/"
 # PATH = "https://gree-recruit.snar.jp/"
 # PATH = "https://job.axol.jp/jn/s/kddi_24/entry/agreement"
-PATH = "https://job.axol.jp/pm/s/nipponsteel_23/entry/agreement"
+# PATH = "https://job.axol.jp/pm/s/nipponsteel_23/entry/agreement"
+PATH = "https://job.axol.jp/jn/s/future_24/entry/agreement"
 # PATH = "https://mypage.3050.i-webs.jp/sumika2024/applicant/entry/index/entrycd/"
 
 driver.get(PATH)
@@ -225,9 +226,12 @@ def axol_jp() -> None:
     driver.find_element(By.NAME, "keitai_m").send_keys(INFO["MOBILE"].split('-')[1])
     driver.find_element(By.NAME, "keitai_l").send_keys(INFO["MOBILE"].split('-')[2])
 
-    if INFO["SAME_ADDRESS"]:
-        same_address = driver.find_element(By.NAME, "jushosame")
-        driver.execute_script("arguments[0].click();", same_address)
+    try:
+        if INFO["SAME_ADDRESS"]:
+            same_address = driver.find_element(By.NAME, "jushosame")
+            driver.execute_script("arguments[0].click();", same_address)
+    except NoSuchElementException:
+        pass
 
     # メールアドレス
     driver.find_element(By.NAME, "email").send_keys(INFO["EMAIL"])
@@ -264,12 +268,15 @@ def axol_jp() -> None:
     graduation_mm = driver.find_element(By.NAME, "school_to_m")
     Select(graduation_mm).select_by_visible_text(INFO["GRADUATION_DAY"].split('/')[1])
 
-    prefecture = driver.find_element(By.NAME, "koko_ken")
-    Select(prefecture).select_by_visible_text(INFO["PREFECTURE"])
-    driver.find_element(By.NAME, "koko_word").send_keys(INFO["HIGH_SCHOOL"].split("高等")[0])
-    driver.implicitly_wait(0.2)
-    driver.find_element(By.NAME, "koko_search").click()
-    driver.find_element(By.XPATH, f"//*[contains(text(),'{INFO['HIGH_SCHOOL']}')]").click()
+    try:
+        prefecture = driver.find_element(By.NAME, "koko_ken")
+        Select(prefecture).select_by_visible_text(INFO["PREFECTURE"])
+        driver.find_element(By.NAME, "koko_word").send_keys(INFO["HIGH_SCHOOL"].split("高等")[0])
+        driver.implicitly_wait(0.2)
+        driver.find_element(By.NAME, "koko_search").click()
+        driver.find_element(By.XPATH, f"//*[contains(text(),'{INFO['HIGH_SCHOOL']}')]").click()
+    except NoSuchElementException:
+        pass
 
 
 if __name__ == '__main__':
