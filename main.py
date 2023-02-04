@@ -14,8 +14,8 @@ driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())
 # PATH = "https://moneyforward-recruit.snar.jp/index.aspx"
 # PATH = "https://linecorp.snar.jp/"
 # PATH = "https://gree-recruit.snar.jp/"
-PATH = "https://job.axol.jp/jn/s/kddi_24/entry/agreement"
-# PATH = "https://job.axol.jp/pm/s/nipponsteel_23/entry/agreement"
+# PATH = "https://job.axol.jp/jn/s/kddi_24/entry/agreement"
+PATH = "https://job.axol.jp/pm/s/nipponsteel_23/entry/agreement"
 # PATH = "https://mypage.3050.i-webs.jp/sumika2024/applicant/entry/index/entrycd/"
 
 driver.get(PATH)
@@ -241,11 +241,11 @@ def axol_jp() -> None:
 
     driver.find_element(By.NAME, "initial").send_keys(INFO["UNIVERSITY_INITIAL"])
     driver.find_element(By.ID, "jsAxolSchool_dcd_search").click()
-    driver.implicitly_wait(0.1)
+    driver.implicitly_wait(0.2)
     driver.find_element(By.XPATH, f"//*[ text() = '{INFO['UNIVERSITY']}' ]").click()
 
     department = driver.find_element(By.ID, "bcd")
-    driver.implicitly_wait(0.1)
+    driver.implicitly_wait(0.2)
     Select(department).select_by_visible_text(INFO["DEPARTMENT"])
 
     major = driver.find_element(By.ID, "paxcd")
@@ -267,7 +267,7 @@ def axol_jp() -> None:
     prefecture = driver.find_element(By.NAME, "koko_ken")
     Select(prefecture).select_by_visible_text(INFO["PREFECTURE"])
     driver.find_element(By.NAME, "koko_word").send_keys(INFO["HIGH_SCHOOL"].split("高等")[0])
-    driver.implicitly_wait(0.1)
+    driver.implicitly_wait(0.2)
     driver.find_element(By.NAME, "koko_search").click()
     driver.find_element(By.XPATH, f"//*[contains(text(),'{INFO['HIGH_SCHOOL']}')]").click()
 
