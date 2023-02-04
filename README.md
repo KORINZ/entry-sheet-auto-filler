@@ -5,6 +5,8 @@ Automatically filling entry sheet with personal information. Powered by Selenium
 Ocansionally, `NoSuchElementException` will raise due to the customization of the entry sheet. Revise the code accordingly with `try...except`.
 
 ### Prerequisite
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/selenium)](https://www.python.org/downloads/)
+
 selenium 4.8.0
 ```
 pip install selenium
