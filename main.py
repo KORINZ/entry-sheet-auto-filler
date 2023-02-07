@@ -14,6 +14,7 @@ driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())
 # PATH = "https://moneyforward-recruit.snar.jp/index.aspx"
 # PATH = "https://linecorp.snar.jp/"
 # PATH = "https://gree-recruit.snar.jp/"
+# PATH = "https://dmm.snar.jp/"
 # PATH = "https://job.axol.jp/jn/s/kddi_24/entry/agreement"
 # PATH = "https://job.axol.jp/pm/s/nipponsteel_23/entry/agreement"
 PATH = "https://job.axol.jp/jn/s/future_24/entry/agreement"
@@ -99,11 +100,14 @@ def snar_jp(job_id: str) -> None:
     except NoSuchElementException:
         Select(mm_university).select_by_visible_text(INFO["GRADUATION_DAY"].split('/')[1][1])
 
-    graduation_status = driver.find_element(By.ID, "ddl_sotsuk")
-    if INFO["GRADUATED"]:
-        Select(graduation_status).select_by_visible_text("既卒")
-    else:
-        Select(graduation_status).select_by_visible_text("卒業予定")
+    try:
+        graduation_status = driver.find_element(By.ID, "ddl_sotsuk")
+        if INFO["GRADUATED"]:
+            Select(graduation_status).select_by_visible_text("既卒")
+        else:
+            Select(graduation_status).select_by_visible_text("卒業予定")
+    except NoSuchElementException:
+        pass
 
     # 携帯番号
     try:
